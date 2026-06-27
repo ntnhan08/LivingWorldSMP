@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LivingWorldSMP V7 — Documentation</title>
+<style>
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ── Reset & tokens ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #0d0d0d;
+  --surface:    #141414;
+  --surface2:   #1c1c1c;
+  --surface3:   #242424;
+  --border:     #2a2a2a;
+  --gold:       #f5a623;
+  --gold-dim:   #b87a10;
+  --green:      #5cb85c;
+  --red:        #d9534f;
+  --blue:       #5bc0de;
+  --purple:     #a855f7;
+  --text:       #e8e8e8;
+  --text-dim:   #888;
+  --text-muted: #555;
+  --accent:     #f5a623;
+  --radius:     6px;
+  --radius-lg:  12px;
+  --mono:       'JetBrains Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.page-wrap { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 24px 0 40px;
+}
+.sidebar-logo {
+  padding: 0 20px 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.sidebar-logo .pixel { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--gold); line-height: 1.8; }
+.sidebar-logo .version { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.nav-section { padding: 0 16px; margin-bottom: 8px; }
+.nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 0 4px 6px; display: block; }
+.nav-item { display: block; padding: 7px 12px; border-radius: var(--radius); color: var(--text-dim); text-decoration: none; font-size: 13px; transition: all .15s; }
+.nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--gold); }
+.nav-item .icon { margin-right: 8px; width: 16px; display: inline-block; text-align: center; }
+
+/* ── Content ─────────────────────────────────────────────────────────────── */
+.content { flex: 1; min-width: 0; padding: 48px 56px; max-width: 1000px; }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #1a1208 0%, #0d1a0d 50%, #0d0d1a 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='1' height='1' fill='%23ffffff08'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245,166,35,.12);
+  border: 1px solid rgba(245,166,35,.3);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: var(--gold);
+  margin-bottom: 20px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
+  color: var(--gold);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero p { color: var(--text-dim); max-width: 600px; position: relative; margin-bottom: 28px; }
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.hero-stat .value { font-size: 24px; font-weight: 700; color: var(--gold); }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); }
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.section { margin-bottom: 64px; scroll-margin-top: 32px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.section-icon.gold   { background: rgba(245,166,35,.15); }
+.section-icon.green  { background: rgba(92,184,92,.15); }
+.section-icon.blue   { background: rgba(91,192,222,.15); }
+.section-icon.red    { background: rgba(217,83,79,.15); }
+.section-icon.purple { background: rgba(168,85,247,.15); }
+.section h2 { font-size: 18px; font-weight: 700; color: var(--text); }
+.section .sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Cards grid ─────────────────────────────────────────────────────────── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--gold-dim); }
+.card-title { font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.card-icon { font-size: 18px; }
+.card p { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+.card .tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.tag.new    { background: rgba(92,184,92,.15);  color: var(--green); border: 1px solid rgba(92,184,92,.3); }
+.tag.v7     { background: rgba(245,166,35,.12); color: var(--gold);  border: 1px solid rgba(245,166,35,.3); }
+.tag.v8     { background: rgba(91,192,222,.12); color: var(--blue);  border: 1px solid rgba(91,192,222,.3); }
+.tag.v9     { background: rgba(168,85,247,.12); color: var(--purple);border: 1px solid rgba(168,85,247,.3); }
+
+/* ── Command table ──────────────────────────────────────────────────────── */
+.cmd-group { margin-bottom: 32px; }
+.cmd-group h3 { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 12px; padding: 6px 12px; background: rgba(245,166,35,.08); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; }
+.cmd-table { width: 100%; border-collapse: collapse; }
+.cmd-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.cmd-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmd-table tr:last-child td { border-bottom: none; }
+.cmd-table tr:hover td { background: var(--surface2); }
+.cmd { font-family: var(--mono); font-size: 13px; color: var(--gold); white-space: nowrap; }
+.cmd-args { font-family: var(--mono); font-size: 12px; color: var(--blue); }
+.perm { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+td.desc { font-size: 13px; color: var(--text-dim); }
+
+/* ── Code blocks ─────────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #c9d1d9;
+  overflow-x: auto;
+  margin: 12px 0;
+  line-height: 1.6;
+}
+.code-block .k  { color: #ff7b72; } /* keyword */
+.code-block .s  { color: #a5d6ff; } /* string */
+.code-block .c  { color: #8b949e; } /* comment */
+.code-block .n  { color: #d2a8ff; } /* name */
+.code-block .v  { color: #79c0ff; } /* value */
+.code-block .g  { color: var(--gold); } /* gold */
+
+/* ── Info boxes ─────────────────────────────────────────────────────────── */
+.info-box {
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 13px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.info-box .icon-wrap { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.info-box.tip    { background: rgba(92,184,92,.08);  border: 1px solid rgba(92,184,92,.25);  color: #a7d9a7; }
+.info-box.warn   { background: rgba(245,166,35,.08); border: 1px solid rgba(245,166,35,.25); color: #e8c97a; }
+.info-box.danger { background: rgba(217,83,79,.08);  border: 1px solid rgba(217,83,79,.25);  color: #e8a7a7; }
+.info-box.info   { background: rgba(91,192,222,.08); border: 1px solid rgba(91,192,222,.25); color: #a7d4e8; }
+
+/* ── Version roadmap ─────────────────────────────────────────────────────── */
+.roadmap { position: relative; padding-left: 28px; }
+.roadmap::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+.roadmap-item { position:relative; margin-bottom:28px; }
+.roadmap-item::before {
+  content:'';
+  position:absolute;
+  left:-24px;
+  top:6px;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  background:var(--bg);
+}
+.roadmap-item.done::before  { background:var(--green);  border-color:var(--green); }
+.roadmap-item.current::before { background:var(--gold); border-color:var(--gold); box-shadow:0 0 0 4px rgba(245,166,35,.2); }
+.roadmap-item.future::before { background:var(--surface2); border-color:var(--text-muted); }
+.roadmap-version { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--gold); margin-bottom: 6px; }
+.roadmap-item.future .roadmap-version { color: var(--text-muted); }
+.roadmap-title { font-weight: 700; margin-bottom: 4px; }
+.roadmap-list { list-style: none; }
+.roadmap-list li { font-size: 13px; color: var(--text-dim); padding: 2px 0; }
+.roadmap-list li::before { content: '▸ '; color: var(--text-muted); }
+
+/* ── Config reference ────────────────────────────────────────────────────── */
+.config-section { margin-bottom: 24px; }
+.config-key { font-family: var(--mono); font-size: 13px; color: var(--blue); }
+.config-type { font-size: 11px; color: var(--text-muted); }
+.config-default { font-family: var(--mono); font-size: 12px; color: var(--gold); }
+.config-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.config-row:last-child { border-bottom: none; }
+
+/* ── File tree ───────────────────────────────────────────────────────────── */
+.filetree {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c9d1d9;
+}
+.filetree .dir  { color: var(--gold); }
+.filetree .file { color: var(--text-dim); }
+.filetree .new  { color: var(--green); }
+.filetree .mod  { color: var(--blue); }
+
+/* ── Badge pills ─────────────────────────────────────────────────────────── */
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.pill { font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid; font-weight: 600; }
+.pill.g { color: var(--gold); border-color: rgba(245,166,35,.4); background: rgba(245,166,35,.08); }
+.pill.b { color: var(--blue); border-color: rgba(91,192,222,.4); background: rgba(91,192,222,.08); }
+.pill.r { color: var(--red); border-color: rgba(217,83,79,.4); background: rgba(217,83,79,.08); }
+.pill.gr { color: var(--green); border-color: rgba(92,184,92,.4); background: rgba(92,184,92,.08); }
+.pill.p { color: var(--purple); border-color: rgba(168,85,247,.4); background: rgba(168,85,247,.08); }
+
+/* ── Flow diagram ────────────────────────────────────────────────────────── */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.flow-step {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  font-size: 13px;
+  text-align: center;
+}
+.flow-arrow { color: var(--text-muted); padding: 0 8px; font-size: 16px; }
+
+/* ── Top nav ─────────────────────────────────────────────────────────────── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar .logo { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--gold); }
+.topbar .spacer { flex: 1; }
+.topbar .badge { font-size: 11px; padding: 2px 10px; border-radius: 999px; background: rgba(245,166,35,.1); color: var(--gold); border: 1px solid rgba(245,166,35,.2); }
+
+/* ── Util ────────────────────────────────────────────────────────────────── */
+.mt8 { margin-top: 8px; } .mt16 { margin-top: 16px; } .mt24 { margin-top: 24px; }
+.text-dim { color: var(--text-dim); } .text-muted { color: var(--text-muted); }
+.bold { font-weight: 700; }
+.mono { font-family: var(--mono); }
+p + p { margin-top: 10px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .content { padding: 32px 24px; }
+  .topbar { padding: 10px 24px; }
+  .hero { padding: 32px 24px; }
+  .hero h1 { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ──────────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <span class="logo">⛏ LIVING WORLD SMP</span>
+  <div class="spacer"></div>
+  <span class="badge">V7.0.0</span>
+  <span class="badge" style="background:rgba(92,184,92,.1);color:var(--green);border-color:rgba(92,184,92,.2)">Paper 1.21.4</span>
+  <span class="badge" style="background:rgba(91,192,222,.1);color:var(--blue);border-color:rgba(91,192,222,.2)">Java 21</span>
+</div>
+
+<div class="page-wrap">
+
+<!-- ── Sidebar ──────────────────────────────────────────────────────────────── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="pixel">LIVING<br>WORLD SMP</div>
+    <div class="version">Version 7.0.0 — June 2026</div>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-label">Getting Started</span>
+    <a class="nav-item" href="#overview"><span class="icon">🏠</span>Overview</a>
+    <a class="nav-item" href="#install"><span class="icon">📦</span>Installation</a>
+    <a class="nav-item" href="#structure"><span class="icon">📁</span>File Structure</a>
+    <a class="nav-item" href="#bugfix"><span class="icon">🔧</span>Bug Fix (V6→V7)</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-label">V7 Features</span>
+    <a class="nav-item" href="#performance"><span class="icon">⚡</span>Performance</a>
+    <a class="nav-item" href="#config"><span class="icon">⚙️</span>Config System</a>
+    <a class="nav-item" href="#logging"><span class="icon">📋</span>Logging</a>
+    <a class="nav-item" href="#error-recovery"><span class="icon">🛡️</span>Error Recovery</a>
+    <a class="nav-item" href="#backup"><span class="icon">💾</span>Backup</a>
+    <a class="nav-item" href="#metrics"><span class="icon">📊</span>Metrics</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-label">Modules</span>
+    <a class="nav-item" href="#economy"><span class="icon">💰</span>Economy</a>
+    <a class="nav-item" href="#nation"><span class="icon">👑</span>Nation</a>
+    <a class="nav-item" href="#boss"><span class="icon">🐉</span>Boss</a>
+    <a class="nav-item" href="#quest"><span class="icon">📜</span>Quest</a>
+    <a class="nav-item" href="#history"><span class="icon">📖</span>History</a>
+    <a class="nav-item" href="#simulation"><span class="icon">🌍</span>Simulation</a>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-label">Reference</span>
+    <a class="nav-item" href="#commands"><span class="icon">💬</span>Commands</a>
+    <a class="nav-item" href="#permissions"><span class="icon">🔑</span>Permissions</a>
+    <a class="nav-item" href="#config-ref"><span class="icon">📄</span>Config Reference</a>
+    <a class="nav-item" href="#api"><span class="icon">🔌</span>Public API</a>
+    <a class="nav-item" href="#roadmap"><span class="icon">🗺️</span>Roadmap</a>
+  </div>
+</nav>
+
+<!-- ── Main content ─────────────────────────────────────────────────────────── -->
+<main class="content">
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div class="hero-badge">⛏ Minecraft Plugin &nbsp;·&nbsp; Paper 1.21.4 &nbsp;·&nbsp; Java 21</div>
+  <h1>LivingWorldSMP<br>Version 7.0.0</h1>
+  <p>
+    Một plugin Minecraft mô phỏng thế giới sống động — kinh tế biến đổi, quốc gia đấu tranh,
+    boss thích nghi, và lịch sử được ghi lại. V7 tập trung toàn bộ vào hiệu năng,
+    độ tin cậy và tính chuyên nghiệp.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="value">36</div><div class="label">Source Files</div></div>
+    <div class="hero-stat"><div class="value">6</div><div class="label">Game Modules</div></div>
+    <div class="hero-stat"><div class="value">7+</div><div class="label">V7 Systems</div></div>
+    <div class="hero-stat"><div class="value">100–200</div><div class="label">Target Players</div></div>
+  </div>
+</div>
+
+<!-- INSTALL -->
+<section class="section" id="install">
+  <div class="section-header">
+    <div class="section-icon green">📦</div>
+    <div><h2>Installation</h2><div class="sub">Cài đặt lần đầu — plugin tự tạo mọi thứ</div></div>
+  </div>
+
+  <p>Plugin <strong>tự động khởi tạo</strong> toàn bộ cấu trúc thư mục khi lần đầu khởi động:</p>
+
+  <div class="code-block">
+<span class="c"># 1. Build JAR</span>
+mvn clean package
+
+<span class="c"># 2. Copy vào server</span>
+cp target/LivingWorldSMP-7.0.0.jar plugins/
+
+<span class="c"># 3. Khởi động server — plugin tự tạo:</span>
+<span class="c">#    plugins/LivingWorldSMP/</span>
+<span class="c">#    ├── config.yml</span>
+<span class="c">#    ├── database/world.db</span>
+<span class="c">#    ├── backups/</span>
+<span class="c">#    └── logs/</span></div>
+
+  <div class="info-box tip">
+    <div class="icon-wrap">✅</div>
+    <div><strong>Zero config:</strong> Mặc định hoạt động ngay. Chỉnh <code>config.yml</code> sau khi đã chạy thử.</div>
+  </div>
+
+  <div class="info-box warn">
+    <div class="icon-wrap">⚠️</div>
+    <div><strong>Yêu cầu:</strong> Paper 1.21.x (không hỗ trợ Spigot thuần), Java 21+, ít nhất 2GB RAM.</div>
+  </div>
+
+  <p class="mt16"><strong>Build requirements:</strong></p>
+  <div class="pills">
+    <span class="pill g">Maven 3.9+</span>
+    <span class="pill b">Java 21 JDK</span>
+    <span class="pill gr">Paper API 1.21.4</span>
+    <span class="pill r">SQLite JDBC (shaded)</span>
+  </div>
+</section>
+
+<!-- STRUCTURE -->
+<section class="section" id="structure">
+  <div class="section-header">
+    <div class="section-icon gold">📁</div>
+    <div><h2>File Structure</h2><div class="sub">Kiến trúc module hoàn chỉnh</div></div>
+  </div>
+
+  <div class="filetree">
+<span class="dir">LivingWorldSMP_v7/</span>
+├── pom.xml
+└── src/main/
+    ├── resources/
+    │   ├── <span class="file">plugin.yml</span>
+    │   └── <span class="file">config.yml</span>
+    └── java/dev/livingworld/
+        ├── <span class="new">LivingWorldPlugin.java</span>          <span class="c"># Main class, startup order</span>
+        │
+        ├── <span class="dir">core/</span>
+        │   ├── <span class="new">LWModule.java</span>                 <span class="c"># Module interface</span>
+        │   ├── <span class="new">ModuleManager.java</span>            <span class="c"># Isolated lifecycle</span>
+        │   └── <span class="new">ModuleStatus.java</span>             <span class="c"># ENABLED|DISABLED|ERROR</span>
+        │
+        ├── <span class="dir">config/</span>
+        │   └── <span class="new">ConfigService.java</span>            <span class="c"># Load+Migrate+Validate</span>
+        │
+        ├── <span class="dir">logging/</span>
+        │   ├── <span class="new">LWLogger.java</span>                 <span class="c"># Base named logger</span>
+        │   ├── <span class="new">EconomyLogger.java</span>
+        │   ├── <span class="new">SimulationLogger.java</span>
+        │   ├── <span class="new">BossLogger.java</span>
+        │   └── <span class="new">AILogger.java</span>
+        │
+        ├── <span class="dir">performance/</span>
+        │   ├── <span class="new">JobPriority.java</span>              <span class="c"># HIGH|NORMAL|LOW</span>
+        │   ├── <span class="new">JobQueue.java</span>                 <span class="c"># Priority async queue</span>
+        │   ├── <span class="new">WorkerPool.java</span>               <span class="c"># Thread pool</span>
+        │   ├── <span class="new">PriorityScheduler.java</span>        <span class="c"># Main-thread scheduler</span>
+        │   ├── <span class="new">CacheLayer.java</span>               <span class="c"># TTL+LRU cache</span>
+        │   └── <span class="new">ChunkSimulator.java</span>           <span class="c"># Chunk-aware ticking</span>
+        │
+        ├── <span class="dir">data/</span>
+        │   └── <span class="new">DataManager.java</span>              <span class="c"># Async SQLite (BUG FIXED)</span>
+        │
+        ├── <span class="dir">backup/</span>
+        │   └── <span class="new">BackupService.java</span>
+        │
+        ├── <span class="dir">metrics/</span>
+        │   └── <span class="new">MetricsService.java</span>           <span class="c"># /lw profiler</span>
+        │
+        ├── <span class="dir">modules/</span>
+        │   ├── economy/  EconomyModule + EconomyListener
+        │   ├── nation/   NationModule + Nation + NationListener
+        │   ├── boss/     BossModule + BossEntity
+        │   ├── quest/    QuestModule + Quest
+        │   ├── history/  HistoryModule + HistoryEntry
+        │   └── simulation/ SimulationModule
+        │
+        ├── <span class="dir">commands/</span>
+        │   └── <span class="new">LWCommand.java</span>                <span class="c"># Master command router</span>
+        │
+        └── <span class="dir">api/</span>
+            └── <span class="new">LivingWorldAPI.java</span>           <span class="c"># Public API for 3rd-party</span>
+  </div>
+</section>
+
+<!-- BUG FIX -->
+<section class="section" id="bugfix">
+  <div class="section-header">
+    <div class="section-icon red">🔧</div>
+    <div><h2>Bug Fix — DataManager.java</h2><div class="sub">Root cause và cách khắc phục</div></div>
+  </div>
+
+  <div class="info-box danger">
+    <div class="icon-wrap">🐛</div>
+    <div>
+      <strong>Lỗi biên dịch V6:</strong><br>
+      <code>DataManager.java:[1,1] unnamed class should not have package declaration</code>
+    </div>
+  </div>
+
+  <p class="mt16"><strong>Root cause:</strong> Java 21 có tính năng "unnamed class" (preview) — cho phép viết code mà không có khai báo class. Nhưng nếu file có <code>package</code> declaration mà <em>không có</em> <code>class DataManager { }</code> wrapper, Java 21 hiểu đây là unnamed class và từ chối package declaration.</p>
+
+  <div class="code-block">
+<span class="c">// ❌ V6 — DataManager.java bị lỗi:</span>
+<span class="k">package</span> dev.livingworld.data;   <span class="c">// ← dòng 1</span>
+<span class="c">// ... imports ...</span>
+<span class="c">// THIẾU: public class DataManager { }  ← Java 21 báo lỗi tại [1,1]</span>
+
+<span class="k">Connection</span> conn;
+<span class="c">// code không có class wrapper → unnamed class</span>
+</div>
+
+  <div class="code-block">
+<span class="c">// ✅ V7 — DataManager.java đúng:</span>
+<span class="k">package</span> dev.livingworld.data;   <span class="c">// package declaration</span>
+
+<span class="k">import</span> java.sql.*;
+<span class="c">// ... other imports ...</span>
+
+<span class="k">public final class</span> <span class="n">DataManager</span> {   <span class="c">// ← class declaration BẮT BUỘC</span>
+    <span class="k">private</span> Connection connection;
+    <span class="c">// ... implementation ...</span>
+}
+</div>
+
+  <p class="mt16">Ngoài ra, pom.xml V7 thêm <code>-proc:none</code> để tắt annotation processing warning:</p>
+  <div class="code-block">
+<span class="k">&lt;compilerArgs&gt;</span>
+  <span class="g">&lt;arg&gt;</span>-proc:none<span class="g">&lt;/arg&gt;</span>   <span class="c">&lt;!-- suppress AP discovery warning --&gt;</span>
+<span class="k">&lt;/compilerArgs&gt;</span>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section class="section" id="performance">
+  <div class="section-header">
+    <div class="section-icon gold">⚡</div>
+    <div><h2>Performance System</h2><div class="sub">V7 — Ưu tiên #1</div></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🏗️</span> WorkerPool</div>
+      <p>Thread pool cố định <code>N</code> threads (config: <code>worker-threads</code>). Tất cả DB query, simulation, backup chạy async tại đây. Tên thread: <code>lw-worker-1</code>, <code>lw-worker-2</code>…</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">📋</span> JobQueue</div>
+      <p>Priority queue (HIGH / NORMAL / LOW). Khi queue đầy, các LOW-priority job bị loại bỏ trước. HIGH-priority job (DB save, economy) không bao giờ bị drop.</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">⏱️</span> PriorityScheduler</div>
+      <p>Chạy trên main thread Bukkit, dispatch tối đa N task/tick. Dùng cho thao tác cần main thread (spawn entity, block change).</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">💨</span> CacheLayer</div>
+      <p>TTL + LRU cache generic. Tự evict expired entries. Dùng cho balance cache, nation lookup. Hit rate hiển thị trong <code>/lw profiler</code>.</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🗺️</span> ChunkSimulator</div>
+      <p>Chỉ mô phỏng chunk đang loaded và nằm trong radius <code>N</code> chunks quanh player. Round-robin để tránh starvation. Max chunk/tick có thể giới hạn.</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">💿</span> AsyncDatabase</div>
+      <p>SQLite với WAL mode + PRAGMA synchronous=NORMAL. Tất cả query wrap qua <code>CompletableFuture</code>. Không có blocking call trên main thread.</p>
+      <span class="tag v7">V7 New</span>
+    </div>
+  </div>
+
+  <div class="info-box tip">
+    <div class="icon-wrap">💡</div>
+    <div>Mục tiêu TPS ổn định: ≥18.0 với 100–200 player. Dưới ngưỡng <code>tps-warn-threshold</code>, /lw profiler hiện màu đỏ.</div>
+  </div>
+</section>
+
+<!-- CONFIG SYSTEM -->
+<section class="section" id="config">
+  <div class="section-header">
+    <div class="section-icon blue">⚙️</div>
+    <div><h2>Config System</h2><div class="sub">Versioned — tự migrate, tự validate</div></div>
+  </div>
+
+  <p><strong>ConfigService</strong> quản lý toàn bộ lifecycle của config.yml:</p>
+
+  <div class="flow">
+    <div class="flow-step">Load từ disk</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Đọc <code>config-version</code></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Migrate nếu cũ</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Validate giá trị</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Save corrections</div>
+  </div>
+
+  <div class="code-block">
+<span class="c"># config.yml — dòng quan trọng nhất:</span>
+<span class="g">config-version: 7</span>   <span class="c"># ← KHÔNG sửa tay! Plugin tự cập nhật</span>
+
+performance:
+  worker-threads: 4       <span class="c"># Số thread async (CPU cores - 1)</span>
+  simulation-radius: 6    <span class="c"># Radius chunk simulation</span>
+  cache-size: 1000        <span class="c"># LRU cache entries</span>
+  cache-ttl-seconds: 300  <span class="c"># Cache TTL (5 phút)</span></div>
+
+  <div class="info-box info">
+    <div class="icon-wrap">ℹ️</div>
+    <div>Khi nâng cấp từ V1–V6 lên V7, config cũ <strong>tự động được migrate</strong>. Không cần xóa config.yml.</div>
+  </div>
+</section>
+
+<!-- LOGGING -->
+<section class="section" id="logging">
+  <div class="section-header">
+    <div class="section-icon purple">📋</div>
+    <div><h2>Logging System</h2><div class="sub">Named loggers — bật/tắt từng loại</div></div>
+  </div>
+
+  <p>V7 thay thế <code>getLogger().info(...)</code> bằng named loggers chuyên biệt:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">📊</span> EconomyLogger</div>
+      <p>Log transaction, price change. Tắt: <code>/lw log economy off</code></p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🌍</span> SimulationLogger</div>
+      <p>Log chunk tick, world events. Tắt: <code>/lw log simulation off</code></p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🐉</span> BossLogger</div>
+      <p>Log spawn, phase, death, adaptation. Tắt: <code>/lw log boss off</code></p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🤖</span> AILogger</div>
+      <p>Log goal evaluation, decisions, planning. Tắt: <code>/lw log ai off</code></p>
+    </div>
+  </div>
+
+  <p class="mt16">Log file được ghi vào thư mục <code>logs/</code> theo ngày:</p>
+  <div class="code-block">plugins/LivingWorldSMP/logs/
+├── lw-economy-2026-06-27.log
+├── lw-boss-2026-06-27.log
+├── lw-sim-2026-06-27.log
+└── lw-ai-2026-06-27.log</div>
+</section>
+
+<!-- ERROR RECOVERY -->
+<section class="section" id="error-recovery">
+  <div class="section-header">
+    <div class="section-icon red">🛡️</div>
+    <div><h2>Error Recovery</h2><div class="sub">Module isolation — một lỗi không tắt cả plugin</div></div>
+  </div>
+
+  <p><strong>ModuleManager</strong> wrap mỗi module trong try-catch độc lập:</p>
+
+  <div class="code-block">
+<span class="c">// Ví dụ: Economy lỗi khi enable</span>
+<span class="k">try</span> {
+    economyModule.onEnable();  <span class="c">// → throws RuntimeException</span>
+    status = ENABLED;
+} <span class="k">catch</span> (Throwable t) {
+    status = ERROR;            <span class="c">// Economy → ERROR</span>
+    errors.put("economy", t); <span class="c">// lưu để /lw status hiển thị</span>
+    <span class="c">// Nation, Boss, Quest, History vẫn tiếp tục enable</span>
+}</div>
+
+  <p class="mt16">Kết quả trên console khi Economy lỗi:</p>
+  <div class="code-block">
+[LW/CORE] ✓ Module enabled: History
+[LW/CORE] ✗ Module economy failed to enable: Database error
+[LW/CORE] ✓ Module enabled: Nation
+[LW/CORE] ✓ Module enabled: Boss
+[LW/CORE] Modules: 5/6 enabled, 1 failed.
+[LW/CORE] 1 module(s) failed to start — see above. Others are unaffected.</div>
+
+  <div class="info-box tip">
+    <div class="icon-wrap">💡</div>
+    <div>Dùng <code>/lw status</code> để xem trạng thái từng module. Module ERROR hiện màu đỏ kèm error message.</div>
+  </div>
+</section>
+
+<!-- BACKUP -->
+<section class="section" id="backup">
+  <div class="section-header">
+    <div class="section-icon green">💾</div>
+    <div><h2>Backup System</h2><div class="sub">Tự động hàng ngày, tự dọn backup cũ</div></div>
+  </div>
+
+  <div class="code-block">plugins/LivingWorldSMP/backups/
+├── 2026-06-20.db   <span class="c"># → bị xóa (cũ hơn keep-days)</span>
+├── 2026-06-21.db
+├── 2026-06-22.db
+├── 2026-06-23.db
+├── 2026-06-24.db
+├── 2026-06-25.db
+└── 2026-06-26.db   <span class="c"># ← giữ 7 ngày gần nhất</span></div>
+
+  <p class="mt16">Config:</p>
+  <div class="code-block">
+backup:
+  enabled: true
+  interval-hours: 24    <span class="c"># mỗi 24h backup tự động</span>
+  keep-days: 7          <span class="c"># giữ 7 file gần nhất</span>
+  directory: backups</div>
+
+  <p class="mt16">Manual backup: <code>/lw backup</code> (cần quyền <code>livingworld.admin</code>)</p>
+</section>
+
+<!-- METRICS -->
+<section class="section" id="metrics">
+  <div class="section-header">
+    <div class="section-icon blue">📊</div>
+    <div><h2>Metrics & Profiler</h2><div class="sub">/lw profiler — realtime performance</div></div>
+  </div>
+
+  <p>Chạy <code>/lw profiler</code> để xem:</p>
+
+  <div class="code-block">
+<span class="g">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+  <span class="g">LivingWorldSMP V7 — Profiler</span>
+<span class="g">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+  TPS   : <span class="n">19.87</span>/20.0
+  Memory: <span class="v">512MB</span> / <span class="v">2048MB</span> (commit 768MB)
+  CPU   : <span class="v">12.4%</span>
+  Worker: active=<span class="v">2</span> submitted=<span class="v">14382</span> rejected=<span class="v">0</span>
+  Queue : size=<span class="v">8</span>/500 shed=<span class="v">0</span>
+  DB    : queries=<span class="v">8291</span>
+<span class="g">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+  Modules:
+    <span class="n">✓ Economy</span>   [ENABLED]
+    <span class="n">✓ Nation</span>    [ENABLED]
+    <span class="n">✓ Boss</span>      [ENABLED]
+    <span class="n">✓ Quest</span>     [ENABLED]
+    <span class="n">✓ History</span>   [ENABLED]
+    <span class="n">✓ Simulation</span> [ENABLED]</div>
+</section>
+
+<!-- ECONOMY MODULE -->
+<section class="section" id="economy">
+  <div class="section-header">
+    <div class="section-icon gold">💰</div>
+    <div><h2>Economy Module</h2><div class="sub">Số dư, chuyển tiền, thị trường giá động</div></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">💳</span> Balance</div>
+      <p>Mỗi player có tài khoản. Số dư ban đầu: 500⬡. Cache TTL 5 phút, persist async về SQLite.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🔄</span> Transfer</div>
+      <p>Chuyển tiền với thuế (mặc định 5%). Giao dịch được log đầy đủ với timestamp.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">📈</span> Dynamic Market</div>
+      <p>Giá thị trường thay đổi theo supply/demand. Nhiều buy → giá tăng. Nhiều sell → giá giảm. Cập nhật mỗi 5 phút.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🏦</span> Nation Treasury</div>
+      <p>Quốc gia có kho bạc riêng. Thuế từ giao dịch có thể được config để vào kho quốc gia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NATION MODULE -->
+<section class="section" id="nation">
+  <div class="section-header">
+    <div class="section-icon gold">👑</div>
+    <div><h2>Nation Module</h2><div class="sub">Tạo vương quốc, ngoại giao, chiến tranh</div></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🏰</span> Nation Creation</div>
+      <p>Player tạo quốc gia với tên độc nhất. Người tạo là Leader. Load toàn bộ nation vào memory khi startup.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🤝</span> Diplomacy</div>
+      <p>3 trạng thái: ALLY / NEUTRAL / ENEMY / WAR. Được persist vào DB, hiển thị trong nation info.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">💬</span> Nation Chat</div>
+      <p>Tên quốc gia tự động hiển thị trước chat message của member. [Kingdom East] Steve: ...</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">⚡</span> Power System</div>
+      <p>Mỗi quốc gia có Power Score (tăng theo member, chiến thắng). Hiển thị trong /lwnation list.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOSS MODULE -->
+<section class="section" id="boss">
+  <div class="section-header">
+    <div class="section-icon red">🐉</div>
+    <div><h2>Boss Module</h2><div class="sub">Boss có trí nhớ, học hỏi, thích nghi</div></div>
+  </div>
+
+  <p>Boss nhớ ai tấn công, vũ khí nào được dùng nhiều nhất, và thay đổi chiến thuật:</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🧠</span> Boss Memory</div>
+      <p>Mỗi lần boss chết, dữ liệu được persist: damage/player, weapon usage. Boss lần sau spawn biết đây là player nguy hiểm.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">⚡</span> Phase System</div>
+      <p>HP threshold triggers phase change. Mỗi phase mở khóa abilities mới. Dragon: Phase 1→2→3 (75%→50%→25%).</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🎯</span> Ability Cooldowns</div>
+      <p>Mỗi ability có cooldown độc lập. Dragon fireball: 5s CD. Shadow Lich wither: 8s CD.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">📊</span> Boss Bar</div>
+      <p>BossBar hiển thị HP%. Màu thay đổi: xanh (>50%) → vàng (>25%) → đỏ (<25%).</p>
+    </div>
+  </div>
+
+  <p class="mt16"><strong>Boss Types:</strong></p>
+  <div class="code-block">
+ANCIENT_DRAGON   — 500 HP  — Phases: 75/50/25%
+IRON_TITAN       — 300 HP  — Phases: 66/33%
+SHADOW_LICH      — 250 HP  — Phases: 50%
+VOLCANIC_GOLEM   — 400 HP  — Phases: 60/30%
+STORM_SERPENT    — 350 HP  — Phases: 70/40/10%</div>
+</section>
+
+<!-- QUEST MODULE -->
+<section class="section" id="quest">
+  <div class="section-header">
+    <div class="section-icon purple">📜</div>
+    <div><h2>Quest Module</h2><div class="sub">Quest động, sinh ra từ trạng thái thế giới</div></div>
+  </div>
+
+  <p>Quest không cố định. AI phân tích world state và sinh quest phù hợp:</p>
+
+  <div class="flow">
+    <div class="flow-step">🌍 World State</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">🤖 AI Analysis</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">📜 Quest Generated</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">🎮 Player Accepts</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">✅ Reward Granted</div>
+  </div>
+
+  <div class="card-grid mt16">
+    <div class="card">
+      <div class="card-title"><span class="card-icon">🏘️</span> Nation Resource Quest</div>
+      <p>Nation thiếu gỗ → sinh quest "Kingdom East cần 64 OAK_LOG". Player hoàn thành → Nation phát triển.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">📈</span> Market Quest</div>
+      <p>Giá Iron cao → sinh quest "Gather 32 Iron Ingot". Reward scale theo market price.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">⚔️</span> Boss Kill Quest</div>
+      <p>Boss đang sống → sinh quest "Defeat Ancient Boss". Reward 500⬡.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-icon">⏰</span> Expiry</div>
+      <p>Mỗi quest có TTL. Quest GATHER: 24h. Quest BOSS: 6h. Hết hạn tự biến mất khỏi pool.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY MODULE -->
+<section class="section" id="history">
+  <div class="section-header">
+    <div class="section-icon blue">📖</div>
+    <div><h2>History Module</h2><div class="sub">World Chronicle — thế giới kể câu chuyện</div></div>
+  </div>
+
+  <p>Mọi sự kiện lớn được ghi vào lịch sử thế giới. Player nhận sách Chronicle:</p>
+
+  <div class="code-block">
+<span class="g">⚔ Year 12: Ancient Dragon appeared in the world!</span>
+<span class="g">👑 Year 12: Steve founded Kingdom of East.</span>
+<span class="g">💰 Year 13: Iron prices rising.</span>
+<span class="g">🌾 Year 14: Crop failure reported in the plains!</span>
+<span class="g">⚔ Year 15: Ancient Dragon was slain by Alex!</span>
+<span class="g">📜 Year 15: Alex completed: Defeat Ancient Boss.</span></div>
+
+  <p class="mt16">Lệnh lấy sách Chronicle: <code>/lwhistory chronicle</code></p>
+  <p>World year tự tăng mỗi 24000 ticks (1 Minecraft day = 1 world year).</p>
+
+  <div class="info-box info">
+    <div class="icon-wrap">💡</div>
+    <div>Mọi module đều gọi <code>historyModule.recordEvent(...)</code> — nên Chronicle phản ánh toàn bộ thế giới tự động.</div>
+  </div>
+</section>
+
+<!-- SIMULATION MODULE -->
+<section class="section" id="simulation">
+  <div class="section-header">
+    <div class="section-icon green">🌍</div>
+    <div><h2>Simulation Module</h2><div class="sub">World events, World News</div></div>
+  </div>
+
+  <p>Simulation chạy ChunkSimulator và broadcast World News mỗi ~10 phút:</p>
+
+  <div class="code-block">
+<span class="c"># World News examples (V7):</span>
+[News] 💰 Iron prices rising
+[News] 🌾 Crop failure reported in the plains!
+[News] 🌍 The world enters Year 15
+
+<span class="c"># Planned World Events (V9):</span>
+🌋 Volcanic Eruption — ảnh hưởng economy
+⚡ Meteor Shower — random boss spawn
+🌊 Flood — affects nation territory
+💀 Plague — reduces nation power</div>
+</section>
+
+<!-- COMMANDS -->
+<section class="section" id="commands">
+  <div class="section-header">
+    <div class="section-icon gold">💬</div>
+    <div><h2>Commands Reference</h2><div class="sub">Tất cả lệnh chi tiết</div></div>
+  </div>
+
+  <!-- /lw -->
+  <div class="cmd-group">
+    <h3>/lw — Admin & Core</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lw help</span></td><td></td><td class="desc">Hiển thị danh sách lệnh</td><td><span class="perm">any</span></td></tr>
+        <tr><td><span class="cmd">/lw status</span></td><td></td><td class="desc">Xem trạng thái từng module (ENABLED/DISABLED/ERROR)</td><td><span class="perm">any</span></td></tr>
+        <tr><td><span class="cmd">/lw profiler</span></td><td></td><td class="desc">Realtime TPS, Memory, CPU, Worker, Queue, DB stats</td><td><span class="perm">livingworld.profiler</span></td></tr>
+        <tr><td><span class="cmd">/lw reload</span></td><td></td><td class="desc">Reload config.yml và restart tất cả modules</td><td><span class="perm">livingworld.admin</span></td></tr>
+        <tr><td><span class="cmd">/lw backup</span></td><td></td><td class="desc">Chạy manual backup ngay lập tức</td><td><span class="perm">livingworld.admin</span></td></tr>
+        <tr><td><span class="cmd">/lw log</span></td><td class="cmd-args">&lt;economy|simulation|boss|ai&gt; &lt;on|off&gt;</span></td><td class="desc">Bật/tắt logger category tại runtime</td><td><span class="perm">livingworld.admin</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- /lweconomy -->
+  <div class="cmd-group">
+    <h3>/lweconomy — Kinh Tế &nbsp; (alias: /eco)</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lweconomy balance</span></td><td></td><td class="desc">Xem số dư của mình (alias: /eco bal)</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lweconomy pay</span></td><td class="cmd-args">&lt;player&gt; &lt;amount&gt;</span></td><td class="desc">Chuyển tiền cho player khác (có thuế 5%)</td><td><span class="perm">livingworld.economy.transfer</span></td></tr>
+        <tr><td><span class="cmd">/lweconomy market</span></td><td></td><td class="desc">Xem bảng giá thị trường hiện tại</td><td><span class="perm">livingworld.player</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- /lwnation -->
+  <div class="cmd-group">
+    <h3>/lwnation — Quốc Gia &nbsp; (alias: /nation, /n)</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lwnation create</span></td><td class="cmd-args">&lt;name&gt;</span></td><td class="desc">Tạo quốc gia mới. Tên phải độc nhất.</td><td><span class="perm">livingworld.nation.create</span></td></tr>
+        <tr><td><span class="cmd">/lwnation list</span></td><td></td><td class="desc">Danh sách tất cả quốc gia, thành viên, power</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwnation info</span></td><td class="cmd-args">[name]</span></td><td class="desc">Thông tin chi tiết quốc gia (mặc định: quốc gia của mình)</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwnation leave</span></td><td></td><td class="desc">Rời quốc gia (Leader phải transfer trước)</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwnation war</span></td><td class="cmd-args">&lt;nation&gt;</span></td><td class="desc">Tuyên chiến (cần ≥2 thành viên)</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwnation ally</span></td><td class="cmd-args">&lt;nation&gt;</span></td><td class="desc">Đề nghị liên minh với quốc gia khác</td><td><span class="perm">livingworld.player</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- /lwboss -->
+  <div class="cmd-group">
+    <h3>/lwboss — Boss</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lwboss list</span></td><td></td><td class="desc">Danh sách boss đang sống, phase, HP</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwboss spawn</span></td><td class="cmd-args">[boss_type]</span></td><td class="desc">Spawn boss tại vị trí của bạn (admin)</td><td><span class="perm">livingworld.admin</span></td></tr>
+        <tr><td><span class="cmd">/lwboss info</span></td><td></td><td class="desc">Chi tiết boss gần nhất</td><td><span class="perm">livingworld.player</span></td></tr>
+      </tbody>
+    </table>
+    <p class="mt8 text-dim">Boss types: <code>ancient_dragon</code> | <code>iron_titan</code> | <code>shadow_lich</code> | <code>volcanic_golem</code> | <code>storm_serpent</code></p>
+  </div>
+
+  <!-- /lwquest -->
+  <div class="cmd-group">
+    <h3>/lwquest — Quest &nbsp; (alias: /quest, /q)</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lwquest list</span></td><td></td><td class="desc">Danh sách quest đang có, reward, hạn chót</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwquest accept</span></td><td class="cmd-args">&lt;id&gt;</span></td><td class="desc">Nhận quest theo ID</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwquest status</span></td><td></td><td class="desc">Xem tiến độ quest đang nhận</td><td><span class="perm">livingworld.player</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- /lwhistory -->
+  <div class="cmd-group">
+    <h3>/lwhistory — Lịch Sử &nbsp; (alias: /history, /chronicle)</h3>
+    <table class="cmd-table">
+      <thead><tr><th>Command</th><th>Arguments</th><th>Mô tả</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">/lwhistory</span></td><td class="cmd-args">[page]</span></td><td class="desc">Xem lịch sử thế giới theo trang</td><td><span class="perm">livingworld.player</span></td></tr>
+        <tr><td><span class="cmd">/lwhistory chronicle</span></td><td></td><td class="desc">Nhận sách World Chronicle in-game</td><td><span class="perm">livingworld.player</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PERMISSIONS -->
+<section class="section" id="permissions">
+  <div class="section-header">
+    <div class="section-icon purple">🔑</div>
+    <div><h2>Permissions</h2><div class="sub">Hệ thống phân quyền</div></div>
+  </div>
+
+  <table class="cmd-table">
+    <thead><tr><th>Permission</th><th>Mặc định</th><th>Mô tả</th></tr></thead>
+    <tbody>
+      <tr><td><span class="cmd">livingworld.admin</span></td><td><span class="perm">OP</span></td><td class="desc">Toàn quyền admin: reload, backup, spawn boss, log toggle</td></tr>
+      <tr><td><span class="cmd">livingworld.player</span></td><td><span class="perm">true</span></td><td class="desc">Quyền cơ bản: xem thông tin, quest, history</td></tr>
+      <tr><td><span class="cmd">livingworld.profiler</span></td><td><span class="perm">OP</span></td><td class="desc">Xem /lw profiler (TPS, Memory, CPU)</td></tr>
+      <tr><td><span class="cmd">livingworld.nation.create</span></td><td><span class="perm">true</span></td><td class="desc">Tạo quốc gia mới</td></tr>
+      <tr><td><span class="cmd">livingworld.economy.transfer</span></td><td><span class="perm">true</span></td><td class="desc">Chuyển tiền giữa player</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CONFIG REFERENCE -->
+<section class="section" id="config-ref">
+  <div class="section-header">
+    <div class="section-icon blue">📄</div>
+    <div><h2>Config Reference</h2><div class="sub">Tất cả giá trị trong config.yml</div></div>
+  </div>
+
+  <div class="code-block">
+<span class="c"># ── META ──────────────────────────────────────────────────────────────</span>
+<span class="g">config-version: 7</span>            <span class="c"># Tự động — không sửa</span>
+
+<span class="c"># ── PERFORMANCE ────────────────────────────────────────────────────────</span>
+performance:
+  worker-threads: <span class="v">4</span>            <span class="c"># Số async threads (min 1, max 32)</span>
+  queue-max-size: <span class="v">500</span>          <span class="c"># Max jobs trong queue</span>
+  scheduler-interval-ms: <span class="v">50</span>   <span class="c"># Tick scheduler mỗi N ms</span>
+  cache-size: <span class="v">1000</span>             <span class="c"># LRU cache entries</span>
+  cache-ttl-seconds: <span class="v">300</span>       <span class="c"># Cache TTL</span>
+  simulation-radius: <span class="v">6</span>         <span class="c"># Chunk radius quanh player</span>
+  max-simulated-chunks-per-tick: <span class="v">20</span>
+  tps-warn-threshold: <span class="v">18.0</span>     <span class="c"># TPS thấp hơn → warn</span>
+
+<span class="c"># ── LOGGING ─────────────────────────────────────────────────────────────</span>
+logging:
+  level: <span class="s">INFO</span>                   <span class="c"># DEBUG | INFO | WARN | ERROR</span>
+  economy: <span class="v">true</span>
+  simulation: <span class="v">true</span>
+  boss: <span class="v">true</span>
+  ai: <span class="v">true</span>
+  database: <span class="v">false</span>               <span class="c"># verbose — chỉ bật khi debug</span>
+  file-logging: <span class="v">true</span>
+  log-directory: <span class="s">logs</span>
+
+<span class="c"># ── DATABASE ──────────────────────────────────────────────────────────</span>
+database:
+  type: <span class="s">sqlite</span>                  <span class="c"># sqlite | mysql | mariadb | postgresql</span>
+  path: <span class="s">database/world.db</span>
+  pool-size: <span class="v">5</span>                  <span class="c"># MySQL/PostgreSQL only</span>
+
+<span class="c"># ── BACKUP ────────────────────────────────────────────────────────────</span>
+backup:
+  enabled: <span class="v">true</span>
+  interval-hours: <span class="v">24</span>
+  keep-days: <span class="v">7</span>
+  directory: <span class="s">backups</span>
+
+<span class="c"># ── MODULES ───────────────────────────────────────────────────────────</span>
+modules:
+  economy:
+    enabled: <span class="v">true</span>
+    starting-balance: <span class="v">500.0</span>
+    currency-symbol: <span class="s">'⬡'</span>
+    tax-rate: <span class="v">0.05</span>              <span class="c"># 5% thuế chuyển tiền</span>
+    market-update-interval-ticks: <span class="v">6000</span>
+  nation:
+    enabled: <span class="v">true</span>
+    min-members-for-war: <span class="v">2</span>
+    land-claim-cost: <span class="v">100.0</span>
+    max-claims-per-member: <span class="v">5</span>
+  boss:
+    enabled: <span class="v">true</span>
+    spawn-interval-ticks: <span class="v">72000</span>  <span class="c"># 1 giờ</span>
+    difficulty-scaling: <span class="v">true</span>
+  quest:
+    enabled: <span class="v">true</span>
+    max-active-quests: <span class="v">5</span>
+    dynamic-generation: <span class="v">true</span>
+    generation-interval-ticks: <span class="v">12000</span>  <span class="c"># 10 phút</span>
+  history:
+    enabled: <span class="v">true</span>
+    max-events: <span class="v">1000</span>
+  simulation:
+    enabled: <span class="v">true</span>
+    world-age-tick-interval: <span class="v">24000</span>  <span class="c"># 1 Minecraft day = 1 world year</span></div>
+</section>
+
+<!-- API -->
+<section class="section" id="api">
+  <div class="section-header">
+    <div class="section-icon blue">🔌</div>
+    <div><h2>Public API</h2><div class="sub">Tích hợp từ plugin khác</div></div>
+  </div>
+
+  <p>Plugin khác có thể truy cập LivingWorldSMP qua <strong>LivingWorldAPI</strong>:</p>
+
+  <div class="code-block">
+<span class="c">// Trong plugin của bạn:</span>
+<span class="k">Plugin</span> lw = Bukkit.getPluginManager().getPlugin(<span class="s">"LivingWorldSMP"</span>);
+<span class="k">if</span> (lw <span class="k">instanceof</span> <span class="n">LivingWorldPlugin</span> lwp) {
+    <span class="n">LivingWorldAPI</span> api = lwp.getAPI();
+
+    <span class="c">// Economy</span>
+    api.getBalance(uuid).thenAccept(bal -> ...);
+    api.addBalance(uuid, name, 100.0);
+    <span class="k">double</span> price = api.getMarketPrice(<span class="s">"DIAMOND"</span>);
+
+    <span class="c">// Nation</span>
+    Optional&lt;Nation&gt; nation = api.getNationByPlayer(uuid);
+    Collection&lt;Nation&gt; all = api.getAllNations();
+
+    <span class="c">// History — plugin của bạn có thể ghi sự kiện vào Chronicle</span>
+    api.recordHistoryEvent(<span class="s">"CUSTOM"</span>, <span class="s">"Title"</span>, <span class="s">"Description"</span>);
+
+    <span class="c">// Thông tin</span>
+    <span class="k">boolean</span> economyOn = api.isModuleEnabled(<span class="s">"economy"</span>);
+    <span class="k">int</span> year = api.getWorldYear();
+}</div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section" id="roadmap">
+  <div class="section-header">
+    <div class="section-icon purple">🗺️</div>
+    <div><h2>Roadmap</h2><div class="sub">Kế hoạch phát triển V7 → V10</div></div>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-item done">
+      <div class="roadmap-version">V6</div>
+      <div class="roadmap-title">Foundation</div>
+      <ul class="roadmap-list">
+        <li>Economy, Nation, Boss, Quest, History, Simulation</li>
+        <li>SQLite database</li>
+        <li>Basic config</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-item current">
+      <div class="roadmap-version">V7 ← CURRENT</div>
+      <div class="roadmap-title">Performance Rewrite</div>
+      <ul class="roadmap-list">
+        <li>✅ WorkerPool + JobQueue + PriorityScheduler</li>
+        <li>✅ CacheLayer (TTL+LRU) + ChunkSimulator</li>
+        <li>✅ ConfigService versioned (v1→v7 migration)</li>
+        <li>✅ Named Loggers (Economy/Simulation/Boss/AI)</li>
+        <li>✅ Error Recovery (module isolation)</li>
+        <li>✅ Automatic Backup (daily, auto-prune)</li>
+        <li>✅ MetricsService (/lw profiler)</li>
+        <li>✅ Bug Fix: DataManager unnamed class</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-item future">
+      <div class="roadmap-version">V8</div>
+      <div class="roadmap-title">Gameplay</div>
+      <ul class="roadmap-list">
+        <li>World News system (story-driven broadcasts)</li>
+        <li>Living NPC (memory, gossip, reputation reactions)</li>
+        <li>Reputation system (Hero/Merchant/Bandit/Explorer/King)</li>
+        <li>Dynamic Quest expansion (escort, build, explore)</li>
+        <li>GUI rewrite (Nation GUI, Economy GUI, Boss GUI)</li>
+        <li>Tutorial system for new players</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-item future">
+      <div class="roadmap-version">V9</div>
+      <div class="roadmap-title">AI Expansion</div>
+      <ul class="roadmap-list">
+        <li>Goal-based AI (Goal→Need→Decision→Planning→Action)</li>
+        <li>Civilization AI (Trade/Religion/Technology/Culture)</li>
+        <li>Boss Evolution 2.0 (persistent cross-spawn memory)</li>
+        <li>World Chronicle book (animated, with illustrations)</li>
+        <li>Dynamic Events: Volcano, Plague, Meteor, Flood, Drought</li>
+        <li>Boss/Event sound effects & animations</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-item future">
+      <div class="roadmap-version">V10 — LTS</div>
+      <div class="roadmap-title">Commercial Product</div>
+      <ul class="roadmap-list">
+        <li>Plugin Marketplace (Space/Magic/Industrial modules)</li>
+        <li>Stable SDK/API</li>
+        <li>Multi-database (MySQL, MariaDB, PostgreSQL)</li>
+        <li>Multi-version (1.20→1.21→1.22→1.23→1.24)</li>
+        <li>Official benchmarks</li>
+        <li>Full documentation & long-term support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border);padding-top:32px;margin-top:64px;color:var(--text-muted);font-size:13px;">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+    <div>
+      <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:8px;">LIVING WORLD SMP</div>
+      <div>Version 7.0.0 — Released June 2026</div>
+      <div>Paper 1.21.4 · Java 21 · SQLite</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="margin-bottom:4px;">36 source files · 6 modules · V7 infrastructure</div>
+      <div>Config version: 7 · DB schema: 8 tables</div>
+      <div style="margin-top:8px;">Build: <code style="font-family:var(--mono);font-size:12px;">mvn clean package</code></div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// Active nav item highlighting
+const sections = document.querySelectorAll('.section, .hero');
+const navItems = document.querySelectorAll('.nav-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
